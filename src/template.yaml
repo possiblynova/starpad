@@ -1,0 +1,163 @@
+# StarPad
+# © Nova Davis - 2023
+# A Novation LaunchPad PRO interface that allows you to bind buttons to keys/sequences
+# Originally intended for playing StarCraft II
+
+# --- Pads --- #
+# Pads are the keys into the binds dictionary that define what pad you press to trigger an action
+#   For square grid pads, use:
+#     !Grid [x, y]:
+#   ... where x and y are the position of the pad, starting at 1, going right and up respectively
+#   For edge buttons use their name:
+#     Top (left -> right):
+#       Up
+#       Down
+#       Left
+#       Right
+#       Session
+#       Note
+#       Device
+#       User
+#     Bottom (left -> right):
+#       RecordArm
+#       TrackSelect
+#       Mute
+#       Solo
+#       Volume
+#       Pan
+#       Sends
+#       StopClip
+#     Left (top -> bottom):
+#       Shift
+#       Click
+#       Undo
+#       Delete
+#       Quantise
+#       Duplicate
+#       Double
+#       Record
+#     Right (top -> bottom):
+#       A
+#       B
+#       C
+#       D
+#       E
+#       F
+#       G
+#       H
+
+# --- Fields --- #
+# Inside each bind, there are multiple fields, all have a default value if omitted
+#   press
+#     - Accepts a KeySequence (see below) that defines what actions to perform when the pad is pressed
+#     - Surround the sequence in single ('sequence') or double ("sequence") quotes
+#     - Defaults to ''
+#   release
+#     - Accepts a KeySequence (see below) that defines what actions to perform when the pad is released
+#     - Surround the sequence in single ('sequence') or double ("sequence") quotes
+#     - Defaults to ''
+#   active
+#     - Accepts a Color (see below), which is one of the following
+#           !Palette n
+#         ...where n is the 0-127 palette number of the color (see: http://www.launchpadfun.com/downloads/Velocity-Colors_MASTER_PICTURE_hires.png)
+#           !Rgb [r, g, b]
+#         ...where r, g, and b are red, green, and blue values in the range of 0-63
+#     - Defaults to green: !Palette 21
+#   inactive
+#     - Accepts a Color (see below)
+#     - Defaults to red: !Palette 5
+#   threshold
+#     - Accepts a velocity from 0-127 which is the minimum velocity at which the pad is counted as pressed
+#     - If the pad is not a square pad and/or the velocity setting is off, pressed is 127 velocity
+#     - If polyphonic aftertouch is enabled and the pressure drops below the set velocity, the pad is counted as released
+#     - Defaults to 0, meaning any press will trigger it
+
+# --- Colors --- #
+# Colors can be one of the following:
+#     !Palette n
+#   ...where n is the 0-127 palette number of the color (see: http://www.launchpadfun.com/downloads/Velocity-Colors_MASTER_PICTURE_hires.png)
+#     !Rgb [r, g, b]
+#   ...where r, g, and b are red, green, and blue values in the range of 0-63
+
+# --- KeySequences --- #
+# KeySequences are the core of StarPad, defining how actions work
+# If you've ever used AutoHotKey before, this shouldn't be too difficult to understand
+#   To tap the A key:
+#     "a"
+#   To tap the B key while holding shift (type capital B):
+#     "+b"
+#   To press and hold both the alt and C keys:
+#     ">!c"
+#   To release the f2 key:
+#     "<(f2)"
+# You get the idea, here's a quick reference:
+#   - Non-special characters are directly typed if they have a direct key mapping (don't require shift to press)
+#   - The order of modifiers and prefixes are in does not matter as long as they're contiguous
+#   - Modifier event ordering:
+#     - If tapping a key:
+#       1. Presses shift
+#       2. Taps the key
+#       3. Releases shift
+#     - If pressing a key:
+#       1. Presses shift
+#       2. Presses the key
+#     - If releasing a key:
+#       1. Releases the key
+#       2. Releases the modifier
+#   - The ! modifier indicates alt
+#   - The ^ modifier indicates ctrl
+#   - The + modifier indicates shift
+#   - The > prefix only presses the key
+#   - The < prefix only releases the key
+#   - Omitting both > and < taps the key
+#   - Certain non-typable keys can also be used by surrounding their lowercase name in parentheses:
+#     Alt: (alt)
+#     Ctrl: (ctrl)
+#     Shift: (shift)
+#     Enter: (enter)
+#     Backspace: (backspace)
+#     Tab: (tab)
+#     Caps Lock: (caps)
+#     Space: (space)
+#     Apps: (menu)
+#     Numpad 0: (#0)
+#     Numpad 1: (#1)
+#     Numpad 2: (#2)
+#     Numpad 3: (#3)
+#     Numpad 4: (#4)
+#     Numpad 5: (#5)
+#     Numpad 6: (#6)
+#     Numpad 8: (#8)
+#     Numpad 9: (#9)
+#     f1: (f1)
+#     f2: (f2)
+#     f3: (f3)
+#     f4: (f4)
+#     f5: (f5)
+#     f6: (f6)
+#     f8: (f8)
+#     f9: (f9)
+#     f10: (f10)
+#     f11: (f11)
+#     f12: (f12)
+#     f13: (f13)
+#     f14: (f14)
+#     f15: (f15)
+#     f16: (f16)
+#     f17: (f17)
+#     f18: (f18)
+#     f19: (f19)
+#     f20: (f20)
+#     f21: (f21)
+#     f22: (f22)
+#     f23: (f23)
+#     f24: (f24)
+
+--- # Put your binds *below* this line
+
+# Example that binds the "Record Arm" button to F2 (usually "Select All Army Units" in SC2)
+RecordArm:
+  press: '(f2)'
+  inactive: !Rgb [63, 63, 63]
+  active: !Rgb [0, 63, 63]
+  threshold: 63
